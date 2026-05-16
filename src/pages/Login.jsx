@@ -3,7 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../lib/firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import logo from "../assets/image/Logo.png";
@@ -12,28 +12,15 @@ import banner from "../assets/image/Banner.jpg";
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (isRegistering && password !== confirmPassword) {
-      toast.error("Password tidak cocok");
-      setLoading(false);
-      return;
-    }
-
     try {
-      if (isRegistering) {
-        await createUserWithEmailAndPassword(auth, email, password);
-      } else {
-        await signInWithEmailAndPassword(auth, email, password);
-      }
+      await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
     } catch (err) {
       console.error("Auth Error:", err);
@@ -44,7 +31,7 @@ export function Login() {
       } else if (err.code === "auth/invalid-credential" || err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
         toast.error("Email atau password salah.");
       } else {
-        toast.error(isRegistering ? "Gagal mendaftar. Silakan cek koneksi atau data Anda." : "Gagal masuk. Silakan coba lagi.");
+        toast.error("Gagal masuk. Silakan coba lagi.");
       }
     } finally {
       setLoading(false);
@@ -91,7 +78,7 @@ export function Login() {
               <img src={logo} alt="ModaPos" className="h-full w-full object-contain" />
             </div>
             <h1 className="text-3xl font-serif text-white tracking-tight font-bold">ModaPos.</h1>
-            <p className="text-[#A1A1AA] mt-2">{isRegistering ? "Buat akun baru Anda" : "Silakan masuk ke akun Anda"}</p>
+            <p className="text-[#A1A1AA] mt-2">Silakan masuk ke akun Anda</p>
           </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -127,31 +114,8 @@ export function Login() {
             </div>
           </div>
 
-          {isRegistering && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white/90">Konfirmasi Password</label>
-              <div className="relative">
-                <Input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="bg-[#1E1E1E] border-[#333333] text-white focus:border-[#6FCF97] pr-10"
-                />
-                <button 
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888888] hover:text-white transition-colors focus:outline-none"
-                >
-                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-          )}
-
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? (isRegistering ? "Mendaftar..." : "Masuk...") : (isRegistering ? "Daftar Sekarang" : "Masuk")}
+            {loading ? "Masuk..." : "Masuk"}
           </Button>
         </form>
 
@@ -190,13 +154,9 @@ export function Login() {
         </Button>
 
         <div className="mt-6 text-center">
-          <button 
-            type="button"
-            onClick={() => setIsRegistering(!isRegistering)}
-            className="text-sm text-primary hover:underline font-medium"
-          >
-            {isRegistering ? "Sudah punya akun? Masuk di sini" : "Belum punya akun? Daftar di sini"}
-          </button>
+          <Link to="/register" className="text-sm text-primary hover:underline font-medium">
+            Belum punya akun? Daftar di sini
+          </Link>
         </div>
         </div>
       </div>
