@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Wasted Vindey';
+  src: url('./assets/fonts/Wasted-Vindey.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  --color-background: #EEEEEE;
+  --color-foreground: #2D3436;
+  --color-primary: #6FCF97;
+  --color-primary-foreground: #ffffff;
+  --color-muted: #ffffff;
+  --color-muted-foreground: #636E72;
+  --color-border: #DCDDE1;
+  --color-card: #ffffff;
+  --color-card-foreground: #2D3436;
+  --font-sans: "Montserrat", sans-serif;
+  --font-serif: "Wasted Vindey", serif;
+}
+
+
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
