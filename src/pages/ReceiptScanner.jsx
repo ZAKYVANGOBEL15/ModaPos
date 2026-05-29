@@ -7,8 +7,16 @@ import { db, auth } from "../lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { GoogleGenAI } from "@google/genai";
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-const genAI = new GoogleGenAI({ apiKey });
+let genAI = null;
+const getGenAI = () => {
+  if (genAI) return genAI;
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error("Gemini API Key is missing. Please add VITE_GEMINI_API_KEY to your .env file.");
+  }
+  genAI = new GoogleGenAI({ apiKey });
+  return genAI;
+};
 
 export function ReceiptScanner() {
   const [imagePreview, setImagePreview] = useState(null);
@@ -52,8 +60,9 @@ export function ReceiptScanner() {
     `;
 
     try {
+      const ai = getGenAI();
       // Menggunakan metode models.generateContent sesuai SDK Unified (@google/genai)
-      const result = await genAI.models.generateContent({
+      const result = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: [
           {

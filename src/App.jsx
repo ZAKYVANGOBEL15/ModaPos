@@ -10,17 +10,19 @@ import { Transactions } from "./pages/Transactions";
 import { AIChat } from "./pages/AIChat";
 import { ReceiptScanner } from "./pages/ReceiptScanner";
 import { Onboarding } from "./pages/Onboarding";
+import { Landing } from "./pages/Landing";
 
 function App() {
   return (
     <BrowserRouter>
       <Toaster position="top-center" />
       <Routes>
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/onboarding" element={<Onboarding />} />
         
-        <Route path="/" element={<Layout />}>
+        <Route path="/app" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="products" element={<Products />} />
           <Route path="pos" element={<POS />} />

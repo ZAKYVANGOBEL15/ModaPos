@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { Search, ShoppingCart, Trash2, Plus, Minus, Loader2, Image as ImageIcon, Receipt } from "lucide-react";
+import { Search, ShoppingCart, Trash2, Plus, Minus, Loader2, Image as ImageIcon, Receipt, CheckCircle2 } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { db, auth } from "../lib/firebase";
@@ -343,7 +343,7 @@ export function POS() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
           <div className="bg-card w-full max-w-sm rounded-[2.5rem] shadow-2xl border border-border p-8 text-center animate-in zoom-in duration-300">
             <div className="h-20 w-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Plus className="h-10 w-10 rotate-45 scale-150 transition-transform duration-500" style={{ transform: 'rotate(0deg)' }} />
+              <CheckCircle2 className="h-10 w-10" />
             </div>
             <h2 className="text-2xl font-bold mb-2 text-[#2D3436]">Transaksi Sukses!</h2>
             <p className="text-muted-foreground text-sm mb-8">Pembayaran berhasil diproses dan stok telah diperbarui.</p>

@@ -29,7 +29,7 @@ export function Register() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      navigate("/app");
     } catch (err) {
       console.error("Auth Error:", err);
       if (err.code === "auth/email-already-in-use") {
@@ -49,7 +49,7 @@ export function Register() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      navigate("/");
+      navigate("/app");
     } catch (err) {
       toast.error("Gagal masuk dengan Google.");
     } finally {
@@ -58,8 +58,8 @@ export function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B] p-4 lg:p-0">
-      <div className="w-full max-w-5xl h-full lg:h-[700px] flex flex-col lg:flex-row bg-[#141414] rounded-[2.5rem] shadow-2xl overflow-hidden border border-[#2A2A2A]">
+    <div className="login-page min-h-screen flex items-center justify-center bg-[#0A0A0B] p-4 lg:p-0">
+      <div className="w-full max-w-4xl h-full lg:h-[600px] flex flex-col lg:flex-row bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-gray-200">
         {/* Banner Section */}
         <div className="lg:w-1/2 relative hidden lg:block overflow-hidden">
           <img 
@@ -78,29 +78,29 @@ export function Register() {
         </div>
 
         {/* Form Section */}
-        <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center overflow-y-auto">
-          <div className="flex flex-col items-center lg:items-start mb-8 text-center lg:text-left">
-            <div className="h-16 w-16 flex items-center justify-center mb-6 overflow-hidden">
+        <div className="lg:w-1/2 p-6 lg:p-10 flex flex-col justify-center overflow-y-auto bg-white">
+          <div className="flex flex-col items-center lg:items-start mb-5 text-center lg:text-left">
+            <div className="h-12 w-12 flex items-center justify-center mb-3 overflow-hidden">
               <img src={logo} alt="ModaPos" className="h-full w-full object-contain" />
             </div>
-            <h1 className="text-3xl font-serif text-white tracking-tight font-bold">ModaPos.</h1>
-            <p className="text-[#A1A1AA] mt-2">Buat akun baru Anda</p>
+            <h1 className="text-2xl font-sans text-gray-900 tracking-tight font-semibold">ModaPos.</h1>
+            <p className="text-gray-600 mt-1 text-sm">Buat akun baru Anda</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white/90">Email</label>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700">Email</label>
               <Input
                 type="email"
                 placeholder="admin@modapos.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-[#1E1E1E] border-[#333333] text-white focus:border-[#6FCF97]"
+                className="bg-gray-50 border-gray-300 text-gray-900 focus:border-[#6FCF97]"
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white/90">Password</label>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700">Password</label>
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
@@ -108,20 +108,20 @@ export function Register() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-[#1E1E1E] border-[#333333] text-white focus:border-[#6FCF97] pr-10"
+                  className="bg-gray-50 border-gray-300 text-gray-900 focus:border-[#6FCF97] pr-10"
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888888] hover:text-white transition-colors focus:outline-none"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900 transition-colors focus:outline-none"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white/90">Konfirmasi Password</label>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700">Konfirmasi Password</label>
               <div className="relative">
                 <Input
                   type={showConfirmPassword ? "text" : "password"}
@@ -129,7 +129,7 @@ export function Register() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="bg-[#1E1E1E] border-[#333333] text-white focus:border-[#6FCF97] pr-10"
+                  className="bg-gray-50 border-gray-300 text-gray-900 focus:border-[#6FCF97] pr-10"
                 />
                 <button 
                   type="button"
@@ -146,16 +146,16 @@ export function Register() {
             </Button>
           </form>
 
-          <div className="mt-6 flex items-center gap-4">
-            <div className="h-[1px] flex-1 bg-[#333333]"></div>
-            <span className="text-xs text-[#888888] font-medium uppercase">Atau</span>
-            <div className="h-[1px] flex-1 bg-[#333333]"></div>
+          <div className="mt-4 flex items-center gap-4">
+            <div className="h-[1px] flex-1 bg-gray-300"></div>
+            <span className="text-xs text-gray-600 font-medium uppercase">Atau</span>
+            <div className="h-[1px] flex-1 bg-gray-300"></div>
           </div>
 
           <Button 
             type="button" 
             variant="outline" 
-            className="w-full mt-6 h-12 bg-transparent border-[#333333] text-white hover:bg-[#222222] font-bold"
+            className="w-full mt-4 h-11 bg-gray-50 border-gray-300 text-gray-900 hover:bg-gray-100 font-bold text-sm"
             onClick={handleGoogleSignIn}
             disabled={loading}
           >
@@ -180,7 +180,7 @@ export function Register() {
             Daftar dengan Google
           </Button>
 
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <Link to="/login" className="text-sm text-primary hover:underline font-medium">
               Sudah punya akun? Masuk di sini
             </Link>

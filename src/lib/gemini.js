@@ -1,13 +1,18 @@
 import { GoogleGenAI } from "@google/genai";
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-const genAI = new GoogleGenAI({ apiKey });
+let genAI = null;
 
-export const getAIInsights = async (products, transactions) => {
+const getGenAI = () => {
+  if (genAI) return genAI;
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("Gemini API Key is missing. Please add VITE_GEMINI_API_KEY to your .env file.");
   }
+  genAI = new GoogleGenAI({ apiKey });
+  return genAI;
+};
 
+export const getAIInsights = async (products, transactions) => {
   const prompt = `
     You are an expert business analyst for ModaPos, a modern universal POS system.
     Analyze the following data and provide:
@@ -24,8 +29,9 @@ export const getAIInsights = async (products, transactions) => {
   `;
 
   try {
-    const response = await genAI.models.generateContent({
-      model: "gemini-3-flash-preview",
+    const ai = getGenAI();
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }]
     });
     return response.text;
@@ -36,12 +42,9 @@ export const getAIInsights = async (products, transactions) => {
 };
 
 export const startAIChat = (products, transactions) => {
-  if (!apiKey) {
-    throw new Error("Gemini API Key is missing.");
-  }
-
-  return genAI.chats.create({ 
-    model: "gemini-3-flash-preview",
+  const ai = getGenAI();
+  return ai.chats.create({ 
+    model: "gemini-3.5-flash",
     config: {
       systemInstruction: {
         role: "system",
@@ -65,3 +68,4 @@ export const startAIChat = (products, transactions) => {
     history: [],
   });
 };
+

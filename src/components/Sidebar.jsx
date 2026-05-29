@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { gsap } from "gsap";
 import { LayoutDashboard, ShoppingCart, Package, Receipt, MessageSquare, Scan, LogOut, Menu, X, Settings as SettingsIcon, Loader2 } from "lucide-react";
 import { auth, db } from "../lib/firebase";
 import { signOut } from "firebase/auth";
@@ -20,6 +21,17 @@ export function Sidebar() {
   const [address, setAddress] = useState("");
   const [userName, setUserName] = useState("");
   const [saving, setSaving] = useState(false);
+
+  const menuItems = [
+    { icon: LayoutDashboard, label: "Dasbor", path: "/app" },
+    { icon: ShoppingCart, label: "POS", path: "/app/pos" },
+    { icon: Package, label: "Produk", path: "/app/products" },
+    { icon: Receipt, label: "Transaksi", path: "/app/transactions" },
+    { icon: Scan, label: "Scanner AI", path: "/app/scanner" },
+    { icon: MessageSquare, label: "Asisten AI", path: "/app/ai" },
+  ];
+
+  const linkRefs = useRef([]);
 
   const fetchSettings = async () => {
     if (!auth.currentUser) return;
@@ -71,20 +83,11 @@ export function Sidebar() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Logout Error:", error);
     }
   };
-
-  const menuItems = [
-    { icon: LayoutDashboard, label: "Dasbor", path: "/" },
-    { icon: ShoppingCart, label: "POS", path: "/pos" },
-    { icon: Package, label: "Produk", path: "/products" },
-    { icon: Receipt, label: "Transaksi", path: "/transactions" },
-    { icon: Scan, label: "Scanner AI", path: "/scanner" },
-    { icon: MessageSquare, label: "Asisten AI", path: "/ai" },
-  ];
 
   const isExpanded = isHovered || isOpen;
 
@@ -135,7 +138,7 @@ export function Sidebar() {
         </div>
 
         <nav className="flex-1 px-3 space-y-2 mt-4">
-          {menuItems.map((item) => (
+          {menuItems.map((item, index) => (
             <NavLink
               key={item.path}
               to={item.path}

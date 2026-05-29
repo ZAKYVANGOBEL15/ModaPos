@@ -35,7 +35,7 @@ export function Layout() {
   }, []);
 
   if (loading || !onboardingChecked) {
-    return <div className="min-h-screen flex items-center justify-center bg-background">
+    return <div className="dashboard-app min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4">
         <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         <p className="text-sm font-medium text-muted-foreground animate-pulse">Memuat...</p>
@@ -54,7 +54,7 @@ export function Layout() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#111111]">
+    <div className="dashboard-app flex h-screen overflow-hidden bg-[#111111]">
       <Sidebar />
       <main className="flex-1 flex flex-col pt-16 lg:pt-3 lg:pr-3 lg:pb-3 overflow-hidden">
         <div className="flex-1 overflow-y-auto bg-[#F8FAFC] lg:rounded-[2rem] shadow-2xl relative border border-border/50 lg:border-none">

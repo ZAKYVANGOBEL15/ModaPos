@@ -8,6 +8,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Kugile';
+  src: url('./assets/fonts/Kugile_Demo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @theme {
   --color-background: #EEEEEE;
   --color-foreground: #2D3436;
@@ -20,16 +27,187 @@
   --color-card-foreground: #2D3436;
   --font-sans: "Montserrat", sans-serif;
   --font-serif: "Wasted Vindey", serif;
+  --font-kugile: "Kugile", sans-serif;
+
+  --animate-fade-in-up: fade-in-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in-down: fade-in-down 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in-left: fade-in-left 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 1.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in-down {
+    from {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(45px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
-
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+.delay-900 { animation-delay: 900ms; }
+.delay-1000 { animation-delay: 1000ms; }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6, button, nav a, .font-kugile {
+    font-family: 'Kugile', var(--font-sans), sans-serif;
+  }
+
+  /* Override font untuk halaman Login & Register */
+  .login-page,
+  .login-page h1,
+  .login-page h2,
+  .login-page h3,
+  .login-page h4,
+  .login-page h5,
+  .login-page h6,
+  .login-page button,
+  .login-page a,
+  .login-page label,
+  .login-page p,
+  .login-page span,
+  .login-page input {
+    font-family: 'Montserrat', sans-serif !important;
+  }
+
+  /* Override font untuk seluruh area Dashboard */
+  .dashboard-app,
+  .dashboard-app h1,
+  .dashboard-app h2,
+  .dashboard-app h3,
+  .dashboard-app h4,
+  .dashboard-app h5,
+  .dashboard-app h6,
+  .dashboard-app button,
+  .dashboard-app a,
+  .dashboard-app label,
+  .dashboard-app p,
+  .dashboard-app span,
+  .dashboard-app input,
+  .dashboard-app td,
+  .dashboard-app th,
+  .dashboard-app select,
+  .dashboard-app textarea {
+    font-family: 'Montserrat', sans-serif !important;
+  }
+}
+
+/* Scroll Entrance Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Cursor Trail Effect */
+.cursor-trail {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: trailFadeOut 0.5s forwards;
+  z-index: 9999;
+}
+
+.cursor-trail-white {
+  background-color: white;
+  border: 2px solid #6FCF97;
+  box-shadow: 0 0 10px rgba(111, 207, 151, 0.3);
+}
+
+@keyframes trailFadeOut {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
   }
 }

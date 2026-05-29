@@ -32,7 +32,7 @@ export function Onboarding() {
       });
       
       // Redirect to dashboard
-      navigate("/", { replace: true });
+      navigate("/app", { replace: true });
     } catch (error) {
       console.error("Onboarding Error:", error);
       toast.error("Gagal menyimpan data. Silakan coba lagi.");
