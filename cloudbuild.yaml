@@ -45,3 +45,6 @@ steps:
 
 images:
   - 'gcr.io/modapos/github.com/zakyvangobel15/modapos:$COMMIT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
