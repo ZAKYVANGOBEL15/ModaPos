@@ -31,7 +31,7 @@ export const getAIInsights = async (products, transactions) => {
   try {
     const ai = getGenAI();
     const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }]
     });
     return response.text;
@@ -44,7 +44,7 @@ export const getAIInsights = async (products, transactions) => {
 export const startAIChat = (products, transactions) => {
   const ai = getGenAI();
   return ai.chats.create({ 
-    model: "gemini-3.5-flash",
+    model: "gemini-2.5-flash",
     config: {
       systemInstruction: {
         role: "system",

@@ -63,7 +63,7 @@ export function ReceiptScanner() {
       const ai = getGenAI();
       // Menggunakan metode models.generateContent sesuai SDK Unified (@google/genai)
       const result = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-2.5-flash",
         contents: [
           {
             role: "user",
