@@ -120,7 +120,7 @@ export function Sidebar() {
         onMouseLeave={() => setIsHovered(false)}
         className={`
           fixed lg:sticky top-0 left-0 z-40 h-screen
-          bg-[#111111] flex flex-col
+          bg-[#1A4020] flex flex-col
           transition-all duration-300 ease-in-out overflow-hidden
           ${isExpanded ? "w-64" : "w-20"}
           ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
@@ -146,8 +146,8 @@ export function Sidebar() {
               className={({ isActive }) =>
                 `flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 group ${
                   isActive
-                    ? "bg-[#222222] text-white shadow-md border border-[#333333]"
-                    : "text-[#888888] hover:bg-[#222222] hover:text-white"
+                    ? "bg-white/10 text-[#6FCF97] shadow-md border border-white/5 border-l-4 border-l-[#6FCF97]"
+                    : "text-white/60 hover:bg-white/5 hover:text-white"
                 }`
               }
             >
@@ -165,7 +165,7 @@ export function Sidebar() {
               setIsSettingsOpen(true);
               setIsOpen(false);
             }}
-            className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 text-[#888888] hover:bg-[#222222] hover:text-white`}
+            className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 text-white/60 hover:bg-white/5 hover:text-white`}
           >
             <SettingsIcon className="h-6 w-6 shrink-0" />
             <span className={`font-medium whitespace-nowrap transition-all duration-300 ${
@@ -176,16 +176,16 @@ export function Sidebar() {
           </button>
         </nav>
 
-        <div className="p-3 border-t border-[#222222]">
-          <div className={`flex items-center gap-4 px-4 py-3 mb-2 rounded-xl text-white bg-[#222222] transition-all duration-300 ${
+        <div className="p-3 border-t border-white/5">
+          <div className={`flex items-center gap-4 px-4 py-3 mb-2 rounded-xl text-white bg-white/5 border border-white/5 transition-all duration-300 ${
             isExpanded ? "opacity-100" : "opacity-0 invisible h-0 py-0 mb-0"
           }`}>
-            <div className="h-8 w-8 rounded-full bg-[#333333] border border-[#444444] flex items-center justify-center text-white font-bold shrink-0">
+            <div className="h-8 w-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white font-bold shrink-0">
               {(userName || auth.currentUser?.email)?.[0].toUpperCase()}
             </div>
             <div className="flex flex-col overflow-hidden">
               <span className="text-xs font-bold truncate">{userName || "Akun Pengguna"}</span>
-              <span className="text-[10px] text-[#888888] truncate">{auth.currentUser?.email}</span>
+              <span className="text-[10px] text-white/50 truncate">{auth.currentUser?.email}</span>
             </div>
           </div>
           <button 

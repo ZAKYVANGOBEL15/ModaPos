@@ -54,7 +54,7 @@ export function Layout() {
   }
 
   return (
-    <div className="dashboard-app flex h-screen overflow-hidden bg-[#111111]">
+    <div className="dashboard-app flex h-screen overflow-hidden bg-[#1A4020]">
       <Sidebar />
       <main className="flex-1 flex flex-col pt-16 lg:pt-3 lg:pr-3 lg:pb-3 overflow-hidden">
         <div className="flex-1 overflow-y-auto bg-[#F8FAFC] lg:rounded-[2rem] shadow-2xl relative border border-border/50 lg:border-none">

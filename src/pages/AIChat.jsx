@@ -40,7 +40,18 @@ export function AIChat() {
         setChatSession(session);
       } catch (err) {
         console.error("Chat Init Error:", err);
-        setError(err.message || "Gagal menyambungkan ke AI. Pastikan API Key benar.");
+        const isQuotaError = 
+          err.message?.includes("quota") || 
+          err.message?.includes("429") || 
+          err.message?.includes("RESOURCE_EXHAUSTED") ||
+          JSON.stringify(err).includes("quota") ||
+          JSON.stringify(err).includes("429") ||
+          JSON.stringify(err).includes("RESOURCE_EXHAUSTED");
+
+        const msg = isQuotaError
+          ? "⚠️ Batas Kuota AI Studio Gratis Terlampaui (429 Rate Limit). Silakan coba lagi beberapa saat lagi atau beralih ke model dengan kuota lebih besar."
+          : (err.message || "Gagal menyambungkan ke AI. Pastikan API Key benar.");
+        setError(msg);
       }
     };
     initChat();
@@ -67,7 +78,20 @@ export function AIChat() {
       setMessages(prev => [...prev, { role: "assistant", content: text }]);
     } catch (error) {
       console.error("Chat Error:", error);
-      setMessages(prev => [...prev, { role: "assistant", content: "Maaf, terjadi kesalahan saat menghubungi AI. Coba lagi nanti." }]);
+      
+      const isQuotaError = 
+        error.message?.includes("quota") || 
+        error.message?.includes("429") || 
+        error.message?.includes("RESOURCE_EXHAUSTED") ||
+        JSON.stringify(error).includes("quota") ||
+        JSON.stringify(error).includes("429") ||
+        JSON.stringify(error).includes("RESOURCE_EXHAUSTED");
+
+      const errorMessage = isQuotaError
+        ? "⚠️ **Batas Kuota AI Tercapai (429 Rate Limit):**\n\nMaaf, Anda telah mencapai batas maksimal permintaan harian untuk versi gratis Google Gemini di proyek ini. \n\n* **Mengapa hal ini terjadi?** Akun Google AI Studio gratis memiliki batas kuota harian yang ketat.\n* **Solusi:** Anda dapat mencoba kembali dalam beberapa menit, menunggu reset kuota harian dari Google, atau mengupgrade akun API Key Anda ke paket berbayar (Pay-as-you-go) di Google AI Studio."
+        : "Maaf, terjadi kesalahan saat menghubungi AI. Coba lagi nanti.";
+
+      setMessages(prev => [...prev, { role: "assistant", content: errorMessage }]);
     } finally {
       setLoading(false);
     }

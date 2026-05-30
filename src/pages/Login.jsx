@@ -52,7 +52,7 @@ export function Login() {
   };
 
   return (
-    <div className="login-page min-h-screen flex items-center justify-center bg-[#0A0A0B] p-4 lg:p-0">
+    <div className="login-page min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0D2010] via-[#1A4020] to-[#2D6B35] p-4 lg:p-0">
       <div className="w-full max-w-4xl h-full lg:h-[600px] flex flex-col lg:flex-row bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-gray-200">
         {/* Banner Section */}
         <div className="lg:w-1/2 relative hidden lg:block overflow-hidden">

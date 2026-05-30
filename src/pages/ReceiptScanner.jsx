@@ -63,13 +63,13 @@ export function ReceiptScanner() {
       const ai = getGenAI();
       // Menggunakan metode models.generateContent sesuai SDK Unified (@google/genai)
       const result = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-3.5-flash",
         contents: [
           {
             role: "user",
             parts: [
               { text: prompt },
-              { 
+              {
                 inlineData: {
                   data: selectedImage.data,
                   mimeType: selectedImage.mimeType
@@ -82,16 +82,29 @@ export function ReceiptScanner() {
 
       const responseText = result.text;
       if (!responseText) throw new Error("AI tidak memberikan respon teks.");
-      
+
       // Bersihkan teks respon untuk mengambil JSON
       const jsonMatch = responseText.match(/\[[\s\S]*\]/);
       if (!jsonMatch) throw new Error("Format data barang tidak ditemukan. Pastikan foto nota jelas.");
-      
+
       const items = JSON.parse(jsonMatch[0]);
       setExtractedItems(Array.isArray(items) ? items : []);
     } catch (error) {
       console.error("Scanning Error:", error);
-      toast.error("AI Gagal memproses: " + (error.message || "Pastikan gambar jelas"));
+      
+      const isQuotaError = 
+        error.message?.includes("quota") || 
+        error.message?.includes("429") || 
+        error.message?.includes("RESOURCE_EXHAUSTED") ||
+        JSON.stringify(error).includes("quota") ||
+        JSON.stringify(error).includes("429") ||
+        JSON.stringify(error).includes("RESOURCE_EXHAUSTED");
+
+      if (isQuotaError) {
+        toast.error("⚠️ Kuota AI Studio Gratis Terlampaui (429). Silakan tunggu beberapa saat atau periksa limitasi Google Cloud Anda.");
+      } else {
+        toast.error("AI Gagal memproses: " + (error.message || "Pastikan gambar jelas"));
+      }
     } finally {
       setScanning(false);
     }
@@ -101,13 +114,13 @@ export function ReceiptScanner() {
     if (extractedItems.length === 0 || !auth.currentUser) return;
     setSaving(true);
     try {
-      const promises = extractedItems.map(item => 
+      const promises = extractedItems.map(item =>
         addDoc(collection(db, "products"), {
           ...item,
           price: Number(item.price),
           stock: Number(item.stock),
           userId: auth.currentUser.uid,
-          imageUrl: "", 
+          imageUrl: "",
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         })
@@ -126,7 +139,7 @@ export function ReceiptScanner() {
   };
 
   const updateItem = (index, field, value) => {
-    setExtractedItems(prev => prev.map((item, i) => 
+    setExtractedItems(prev => prev.map((item, i) =>
       i === index ? { ...item, [field]: value } : item
     ));
   };
@@ -144,18 +157,17 @@ export function ReceiptScanner() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="space-y-6">
-          <div 
+          <div
             onClick={() => fileInputRef.current?.click()}
-            className={`aspect-[4/3] border-2 border-dashed rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
-              imagePreview ? "border-[#6FCF97] bg-white shadow-xl" : "border-muted-foreground/20 hover:border-[#6FCF97]/50 bg-muted/5"
-            }`}
+            className={`aspect-[4/3] border-2 border-dashed rounded-3xl flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${imagePreview ? "border-[#6FCF97] bg-white shadow-xl" : "border-muted-foreground/20 hover:border-[#6FCF97]/50 bg-muted/5"
+              }`}
           >
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleImageSelect} 
-              accept="image/*" 
-              className="hidden" 
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageSelect}
+              accept="image/*"
+              className="hidden"
             />
             {imagePreview ? (
               <img src={imagePreview} alt="Preview" className="h-full w-full object-contain p-4 rounded-3xl" />
@@ -170,7 +182,7 @@ export function ReceiptScanner() {
             )}
           </div>
 
-          <Button 
+          <Button
             className="w-full h-14 text-lg font-bold rounded-2xl shadow-lg bg-[#6FCF97] hover:bg-[#6FCF97]/90 text-white"
             disabled={!selectedImage || scanning}
             onClick={startScan}
@@ -214,7 +226,7 @@ export function ReceiptScanner() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
                       <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Nama Barang</label>
-                      <Input 
+                      <Input
                         value={item.name}
                         onChange={(e) => updateItem(index, "name", e.target.value)}
                         className="bg-white border-none shadow-sm font-bold text-base mt-1"
@@ -222,7 +234,7 @@ export function ReceiptScanner() {
                     </div>
                     <div>
                       <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Harga Jual (Rp)</label>
-                      <Input 
+                      <Input
                         type="number"
                         value={item.price}
                         onChange={(e) => updateItem(index, "price", e.target.value)}
@@ -231,7 +243,7 @@ export function ReceiptScanner() {
                     </div>
                     <div>
                       <label className="text-[10px] uppercase font-bold text-muted-foreground ml-1">Jumlah (Stok)</label>
-                      <Input 
+                      <Input
                         type="number"
                         value={item.stock}
                         onChange={(e) => updateItem(index, "stock", e.target.value)}
@@ -239,7 +251,7 @@ export function ReceiptScanner() {
                       />
                     </div>
                   </div>
-                  <button 
+                  <button
                     onClick={() => removeItem(index)}
                     className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                   >
@@ -252,8 +264,8 @@ export function ReceiptScanner() {
 
           {extractedItems.length > 0 && (
             <div className="p-6 border-t border-border bg-white">
-              <Button 
-                onClick={handleSaveToInventory} 
+              <Button
+                onClick={handleSaveToInventory}
                 disabled={saving}
                 className="w-full h-14 bg-[#6FCF97] hover:bg-[#6FCF97]/90 text-white font-bold rounded-2xl shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
@@ -264,7 +276,7 @@ export function ReceiptScanner() {
           )}
         </div>
       </div>
-      
+
       <div className="mt-12 flex flex-col items-center opacity-40">
         <p className="text-[10px] text-[#2D3436] uppercase tracking-[0.2em] font-bold">
           Powered by Google Gemini AI
