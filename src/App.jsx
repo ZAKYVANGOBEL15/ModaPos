@@ -1,8 +1,7 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Layout } from "./components/Layout";
 import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
 import { Dashboard } from "./pages/Dashboard";
 import { Products } from "./pages/Products";
 import { POS } from "./pages/POS";
@@ -19,7 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* /register diredirect ke /login - auth ditangani Google OAuth */}
+        <Route path="/register" element={<Navigate to="/login" replace />} />
         <Route path="/onboarding" element={<Onboarding />} />
         
         <Route path="/app" element={<Layout />}>
