@@ -5,8 +5,9 @@ import { auth, db } from "../lib/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
-import { Sparkles, Store, User, ArrowRight, Loader2 } from "lucide-react";
+import { Store, User, ArrowRight, Loader2, MapPin, Sparkles } from "lucide-react";
 import logo from "../assets/image/Logo.png";
+import banner from "../assets/image/Banner.jpg";
 
 export function Onboarding() {
   const [userName, setUserName] = useState("");
@@ -30,8 +31,6 @@ export function Onboarding() {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      
-      // Redirect to dashboard
       navigate("/app", { replace: true });
     } catch (error) {
       console.error("Onboarding Error:", error);
@@ -42,82 +41,91 @@ export function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full grid grid-cols-1 md:grid-cols-2 bg-[#141414] rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden border border-[#2A2A2A]">
-        {/* Left Side - Visual */}
-        <div className="bg-[#1A1A1A] p-12 flex flex-col justify-between relative overflow-hidden">
-          <div className="relative z-10">
-            <img src={logo} alt="ModaPos" className="h-12 w-12 object-contain mb-8" />
-            <h1 className="text-4xl font-bold text-white leading-tight">
-              Selamat Datang di <span className="text-[#6FCF97] font-serif italic">ModaPos.</span>
-            </h1>
-            <p className="text-[#A1A1AA] mt-4 text-sm leading-relaxed">
-              Mari siapkan ruang kerja digital Anda dalam hitungan detik.
+    <div className="login-page min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0D2010] via-[#1A4020] to-[#2D6B35] p-4 lg:p-0">
+      <div className="w-full max-w-4xl h-full lg:h-[620px] flex flex-col lg:flex-row bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-gray-200">
+
+        {/* Left: Banner Section */}
+        <div className="lg:w-1/2 relative hidden lg:block overflow-hidden">
+          <img
+            src={banner}
+            alt="Setup Toko Banner"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 flex flex-col justify-end p-12">
+
+            <h2 className="text-4xl font-bold text-white leading-tight">
+              Siapkan Toko Anda<br />dalam 60 Detik.
+            </h2>
+            <p className="text-white/80 mt-4 text-sm max-w-sm">
+              Isi profil toko Anda sekarang. ModaPos akan langsung siap membantu Anda mengelola stok, transaksi, dan laporan bisnis dengan AI.
             </p>
           </div>
-          
-          {/* Decorative elements */}
-          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#6FCF97]/20 rounded-full blur-3xl"></div>
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#6FCF97]/10 rounded-full blur-3xl"></div>
         </div>
 
-        {/* Right Side - Form */}
-        <div className="p-10 md:p-12">
-          <div className="mb-8 text-center md:text-left">
-            <h2 className="text-xl font-bold text-white">Siapkan Profil Anda</h2>
-            <p className="text-xs text-[#888888] mt-1">Lengkapi data berikut untuk memulai.</p>
+        {/* Right: Form Section */}
+        <div className="lg:w-1/2 p-6 lg:p-10 flex flex-col justify-center overflow-y-auto bg-white">
+          <div className="flex flex-col items-center lg:items-start mb-6 text-center lg:text-left">
+            <div className="h-12 w-12 flex items-center justify-center mb-4 overflow-hidden">
+              <img src={logo} alt="ModaPos" className="h-full w-full object-contain" />
+            </div>
+            <h1 className="text-2xl font-sans text-gray-900 tracking-tight font-semibold">Selamat Datang!</h1>
+            <p className="text-gray-500 mt-1 text-sm">Lengkapi profil toko Anda untuk memulai.</p>
           </div>
 
-          <form onSubmit={handleCompleteOnboarding} className="space-y-5">
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-[#A1A1AA] flex items-center gap-2">
-                <User className="h-3 w-3" /> Nama Anda
+          <form onSubmit={handleCompleteOnboarding} className="space-y-4">
+            {/* Nama Pengguna */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700 flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-[#6FCF97]" /> Nama Anda
               </label>
-              <Input 
+              <Input
                 placeholder="Masukkan nama lengkap"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 required
-                className="h-12 rounded-xl bg-[#1E1E1E] border-[#333333] text-white focus:border-[#6FCF97] placeholder:text-[#555]"
+                className="bg-gray-50 border-gray-300 text-gray-900 focus:border-[#6FCF97]"
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-[#A1A1AA] flex items-center gap-2">
-                <Store className="h-3 w-3" /> Nama Toko
+            {/* Nama Toko */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700 flex items-center gap-1.5">
+                <Store className="h-3.5 w-3.5 text-[#6FCF97]" /> Nama Toko
               </label>
-              <Input 
-                placeholder="Contoh: Toko Jaya Baru"
+              <Input
+                placeholder="Contoh: Toko Jaya Makmur"
                 value={storeName}
                 onChange={(e) => setStoreName(e.target.value)}
                 required
-                className="h-12 rounded-xl bg-[#1E1E1E] border-[#333333] text-white focus:border-[#6FCF97] placeholder:text-[#555]"
+                className="bg-gray-50 border-gray-300 text-gray-900 focus:border-[#6FCF97]"
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-[#A1A1AA] flex items-center gap-2">
-                 Alamat Toko
+            {/* Alamat Toko */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-gray-700 flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 text-[#6FCF97]" /> Alamat Toko
+                <span className="text-gray-400 font-normal">(opsional)</span>
               </label>
-              <Input 
-                placeholder="Jl. Raya No. 123"
+              <Input
+                placeholder="Jl. Raya No. 123, Kota Anda"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="h-12 rounded-xl bg-[#1E1E1E] border-[#333333] text-white focus:border-[#6FCF97] placeholder:text-[#555]"
+                className="bg-gray-50 border-gray-300 text-gray-900 focus:border-[#6FCF97]"
               />
             </div>
 
-            <Button 
-              type="submit" 
-              className="w-full h-14 text-lg font-bold rounded-2xl shadow-lg mt-8 group bg-white text-[#111111] hover:bg-gray-200 border border-transparent"
+            <Button
+              type="submit"
+              className="w-full h-11 font-bold rounded-xl mt-2 group"
               disabled={loading}
             >
               {loading ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
                 <>
-                  Mulai Sekarang
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  Mulai Pakai ModaPos
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </>
               )}
             </Button>
