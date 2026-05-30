@@ -940,7 +940,7 @@ export function Landing() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: Zap, badge: "AI Core", title: "Google Gemini 3.5 Flash", desc: "Model AI multimodal terbaru dari Google — memproses teks, gambar nota, dan data transaksi untuk memberikan jawaban bisnis akurat." },
+              { icon: Zap, badge: "AI Core", title: "Google Gemini 2.5 Flash", desc: "Model AI multimodal terbaru dari Google — memproses teks, gambar nota, dan data transaksi untuk memberikan jawaban bisnis akurat." },
               { icon: Shield, badge: "Google Cloud", title: "Firebase Auth & Firestore", desc: "Autentikasi aman dengan Google Account dan database realtime yang sinkron otomatis. Data Anda aman di Google Cloud." },
               { icon: Users, badge: "Universal", title: "Untuk Semua Jenis UMKM", desc: "Dari warung kelontong, toko fashion, hingga kafe — ModaPos bekerja untuk semua industri ritel tanpa konfigurasi rumit." },
             ].map((item, i) => (
